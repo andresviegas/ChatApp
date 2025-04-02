@@ -272,6 +272,9 @@ ServiceFabricBackup/
 *.ldf
 *.ndf
 
+#Ignorar o ficheiro db que guarda o histórico do chat
+*.db
+
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout

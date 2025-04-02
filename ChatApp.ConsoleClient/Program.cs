@@ -61,6 +61,15 @@ class Program
             Console.ForegroundColor = originalColor;
         });
 
+        connection.On<string[]>("ReceiveChatHistory", (history) =>
+        {
+            Console.WriteLine("Histórico de mensagens:");
+            foreach (var message in history)
+            {
+                Console.WriteLine(message);
+            }
+        });
+
         // 🔹 Quando um utilizador sai. Não existe código no servidor para acionar isto ainda
         connection.On<string, string>("UserDisconnected", (disconnectedUser, timestamp) =>
         {
@@ -68,6 +77,7 @@ class Program
             Console.WriteLine($"[{timestamp}] {disconnectedUser} saiu do chat.");
         });
 
+        //    Quando alguém (pode ser o próprio) envia uma mensagem
         connection.On<string, string, string>("ReceiveMessage", (sender, message, timestamp) =>
         {
 
@@ -97,6 +107,8 @@ class Program
 
         Console.WriteLine("Conectado ao chat! Escreve mensagens para enviar:");
 
+        await connection.InvokeAsync("GetChatHistory");
+
         while (true)
         {
             var message = Console.ReadLine();
@@ -116,9 +128,3 @@ class Program
 
 
 
-
-
-//dependencias
-//dotnet add package Microsoft.Extensions.Configuration
-//dotnet add package Microsoft.Extensions.Configuration.Json
-//dotnet add package Microsoft.Extensions.Configuration.Binder
